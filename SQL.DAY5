@@ -1,0 +1,27 @@
+CREATE TABLE tiktok (
+					views INT
+);
+
+-- Insert records
+-- Insert records into the tiktok table
+INSERT INTO tiktok (views) 
+VALUES 
+	(100), (800), (350), 
+	(150), (600), 
+	(700), (700),(950);
+
+-- Q. Find the median within a series of numbers in SQL ?
+
+with cte as(
+			select views, 
+			row_number() over(order by views asc) as rn_asc,
+			row_number() over(order by views desc) as rn_desc from tiktok) -- =1 is used in even case , in case of odd we need =0 so use >=1 then also it is zero.
+select avg(views) as median from cte where abs(rn_asc - rn_desc) =1; -- code for postgresql
+
+with cte as (
+		select views, count(*) over() as total_count,
+			row_number() over(order by views asc) as rn 
+		from tiktok)
+select avg(views) as median from cte 
+where rn in (FLOOR((total_count+1)/2), CEIL((total_count+1)/2));  -- for mysql 
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
