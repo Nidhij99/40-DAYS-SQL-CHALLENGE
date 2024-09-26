@@ -11,6 +11,8 @@ VALUES
 	(700), (700),(950);
 
 -- Q. Find the median within a series of numbers in SQL ?
+-- 1,2,3,4,5 - odd, median = middle value
+-- 1,2,3,4,5 -- even, so median=n+1/2
 
 with cte as(
 			select views, 
