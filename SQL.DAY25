@@ -52,7 +52,27 @@ and the Returns table contains information about returned items.
 Design a SQL query to find the top 5 Customer with the highest percentage of returned items out of their total orders. 
 Return the customer ID and the percentage of returned items rounded to two decimal places.*/
 
+WITH Orders_CTE AS (                                                                            
+select customer_id, sum(total_items_ordered) as total_ordered
+from orders
+group by customer_id),
 
+Returns_cte AS(
+select o.customer_id , sum(r.returned_items) as total_returned
+from returns as r 
+join orders as o
+on o.order_id=r.order_id
+group by o.customer_id)
+
+select oc.customer_id, rc.total_returned, oc.total_ordered ,
+Round(case when oc.total_ordered > 0 then (rc.total_returned/ oc.total_ordered)*100 else 0 end,2) as return_percentage
+From orders_CTE as oc
+join returns_cte as rc
+on oc.customer_id= rc.customer_id
+order by return_percentage desc
+limit 5 ;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
