@@ -23,7 +23,7 @@ VALUES
 (7, 'Grace', 60000, 3, 3, '2022-05-12'),       
 (7, 'Grace', 60000, 3, 3, '2022-05-12');      
 
--- Q5. Delete Duplicate Records but make sure to keep the distinct records.
+-- Q1. Delete Duplicate Records but make sure to keep the distinct records.
 
 with cte as(                                 -- important question
 select *, row_number() over(partition by id, name, salary,department-id, manager_id, hire_date order by id) as rn from employees)
@@ -37,4 +37,25 @@ select * from employees order by salary limit 1 offset 3;
 -- or use this
 select * from (select *, dense_rank() over(order by salary desc) as drn from employees) x
 where drn=4;
+
+-- Q3.Write SQL query to find median salary 
+-- If we add 1 more record with salary 91,000 what will be median?
+
+INSERT INTO employees
+VALUES
+(9, 'sam', 91000);
+SELECT * FROM employees;
+
+WITH ordered_salary AS (            -- for mysql
+  SELECT *,
+    ROW_NUMBER() OVER (ORDER BY salary ASC) AS rn,
+    COUNT(*) OVER() AS total_rows
+  FROM Employees
+)
+SELECT AVG(salary) AS median_salary
+FROM ordered_salary
+WHERE rn IN (FLOOR((total_rows + 1) / 2), CEIL((total_rows + 1) / 2));
+
+--Q4 Find the employee details who has salary greater than their managers salary
+-- in multiple approach!
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
