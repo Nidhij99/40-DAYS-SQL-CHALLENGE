@@ -29,4 +29,12 @@ with cte as(                                 -- important question
 select *, row_number() over(partition by id, name, salary,department-id, manager_id, hire_date order by id) as rn from employees)
 delete from employees 
 where id in (select id from cte where rn>1);
+
+-- Q2. Find nth highest salary!
+-- if n= 4 and to find 4th highest salary
+select * from employees order by salary limit 1 offset 3;
+
+-- or use this
+select * from (select *, dense_rank() over(order by salary desc) as drn from employees) x
+where drn=4;
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
