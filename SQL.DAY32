@@ -58,4 +58,11 @@ WHERE rn IN (FLOOR((total_rows + 1) / 2), CEIL((total_rows + 1) / 2));
 
 --Q4 Find the employee details who has salary greater than their managers salary
 -- in multiple approach!
+
+select e1.id, e1.name, e1.salary , e1.manager_id, e2.salary as manager_salary, e2.name as manager_name 
+from employees as e1
+join employees as e2
+on e1.manager_id = e2.id 
+where e1.salary> e2.salary;
+
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
