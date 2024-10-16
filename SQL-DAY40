@@ -47,6 +47,6 @@ Do not consider rows in which there is no flag ID.*/
 select video_id, count(distinct(concat(user_firstname, user_lastname))) from user_flags
 where flag_id is not null 
 group by video_id
-order by video_id desc;
+order by 2 desc;
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
