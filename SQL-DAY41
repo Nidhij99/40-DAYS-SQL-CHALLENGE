@@ -30,16 +30,19 @@ with cte1 as (
 Select *, row_number() over(partition by customer_id order by transaction_date) as rn
 from bank_transactions) ,
 
+-- First transaction date details 
 cte2 as (
 select customer_id, transaction_amount,transaction_date 
 from cte1
 where rn=(select min(rn) from cte1)),
 
+-- Last transaction date details
 cte3 as(  
 select customer_id, transaction_amount,transaction_date
 from cte1
 where rn = (select max(rn) from cte1))
 
+-- Joining both the ctes
 select cte2.customer_id,
 cte2.transaction_date as first_transaction_date , 
 cte2.transaction_amount as first_transaction_amount,
